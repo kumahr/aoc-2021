@@ -11,13 +11,8 @@ fn aoc1_1() {
     let reader = BufReader::new(file);
 
     for line in reader.lines() {
-        match line {
-            Ok(l) => {
-                measurements.push(l.parse::<i32>().unwrap());
-            }
-            Err(e) => {
-                println!("{}", e)
-            }
+        if let Ok(l) = line {
+            measurements.push(l.parse::<i32>().unwrap());
         }
     }
     let mut count: i32 = 0;
@@ -38,13 +33,8 @@ fn aoc1_2() {
 
     // Convert file into measurements
     for line in reader.lines() {
-        match line {
-            Ok(l) => {
-                measurements.push(l.parse::<i64>().unwrap());
-            }
-            Err(e) => {
-                println!("{}", e)
-            }
+        if let Ok(l) = line {
+            measurements.push(l.parse::<i64>().unwrap());
         }
     }
 

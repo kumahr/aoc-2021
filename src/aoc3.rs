@@ -1,5 +1,4 @@
 use std::{
-    collections::HashMap,
     fs::File,
     io::{BufRead, BufReader},
 };
@@ -9,49 +8,41 @@ const INPUT: &str = "src/aoc3.txt";
 fn aoc3_1() {
     // gamma rate => most common bit
     // epsilon rate => least common bit
-    let mut columns: HashMap<usize, Vec<usize>> = HashMap::new();
+    let mut columns: Vec<Vec<usize>> = vec![];
     let file = File::open(INPUT).unwrap();
     let reader = BufReader::new(file);
     for line in reader.lines() {
         if let Ok(l) = line {
             for char_vector in l.char_indices() {
-                if let None = columns.get_mut(&char_vector.0) {
-                    // create entry
-                    columns.insert(char_vector.0, vec![]);
+                if char_vector.0 >= columns.len() {
+                    columns.push(vec![])
                 }
-
                 if let Some(digit) = char_vector.1.to_digit(10) {
-                    if let Some(bits) = columns.get_mut(&char_vector.0) {
-                        bits.push(digit as usize);
-                    }
+                    columns[char_vector.0].push(digit as usize);
                 }
             }
         }
     }
-    let mut k = columns.keys().map(|k| k).collect::<Vec<&usize>>();
-    k.sort();
 
     let mut gamma_rate_bits = String::from("");
     let mut epsilon_rate_bits = String::from("");
-    for bit_index in k {
-        if let Some(bits) = columns.get(bit_index) {
-            let mut sum_bit_one = 0;
-            let mut sum_bit_zero = 0;
-            for bit in bits {
-                if *bit == 0 {
-                    sum_bit_zero += 1;
-                }
-                if *bit == 1 {
-                    sum_bit_one += 1;
-                }
+    for bits in columns {
+        let mut sum_bit_one = 0;
+        let mut sum_bit_zero = 0;
+        for bit in bits {
+            if bit == 0 {
+                sum_bit_zero += 1;
             }
-            if sum_bit_one > sum_bit_zero {
-                gamma_rate_bits.push('1');
-                epsilon_rate_bits.push('0');
-            } else {
-                epsilon_rate_bits.push('1');
-                gamma_rate_bits.push('0');
+            if bit == 1 {
+                sum_bit_one += 1;
             }
+        }
+        if sum_bit_one > sum_bit_zero {
+            gamma_rate_bits.push('1');
+            epsilon_rate_bits.push('0');
+        } else {
+            epsilon_rate_bits.push('1');
+            gamma_rate_bits.push('0');
         }
     }
     let numeric_gamma_rate = isize::from_str_radix(&gamma_rate_bits, 2).unwrap();

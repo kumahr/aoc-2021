@@ -11,25 +11,20 @@ fn aoc2_1() {
     let reader = BufReader::new(file);
 
     for line in reader.lines() {
-        match line {
-            Ok(l) => {
-                let a = l.split(" ").collect::<Vec<&str>>();
-                let step = a[1].parse::<i32>().unwrap();
-                match a[0] {
-                    "forward" => {
-                        position.0 += step;
-                    }
-                    "up" => {
-                        position.1 -= step;
-                    }
-                    "down" => {
-                        position.1 += step;
-                    }
-                    _ => {}
+        if let Ok(l) = line {
+            let a = l.split(" ").collect::<Vec<&str>>();
+            let step = a[1].parse::<i32>().unwrap();
+            match a[0] {
+                "forward" => {
+                    position.0 += step;
                 }
-            }
-            Err(e) => {
-                println!("{}", e)
+                "up" => {
+                    position.1 -= step;
+                }
+                "down" => {
+                    position.1 += step;
+                }
+                _ => {}
             }
         }
     }
@@ -46,26 +41,21 @@ fn aoc2_2() {
     let reader = BufReader::new(file);
 
     for line in reader.lines() {
-        match line {
-            Ok(l) => {
-                let a = l.split(" ").collect::<Vec<&str>>();
-                let step = a[1].parse::<i32>().unwrap();
-                match a[0] {
-                    "forward" => {
-                        position.0 += step;
-                        position.1 += position.2 * step;
-                    }
-                    "up" => {
-                        position.2 -= step;
-                    }
-                    "down" => {
-                        position.2 += step;
-                    }
-                    _ => {}
+        if let Ok(l) = line {
+            let a = l.split(" ").collect::<Vec<&str>>();
+            let step = a[1].parse::<i32>().unwrap();
+            match a[0] {
+                "forward" => {
+                    position.0 += step;
+                    position.1 += position.2 * step;
                 }
-            }
-            Err(e) => {
-                println!("{}", e)
+                "up" => {
+                    position.2 -= step;
+                }
+                "down" => {
+                    position.2 += step;
+                }
+                _ => {}
             }
         }
     }
